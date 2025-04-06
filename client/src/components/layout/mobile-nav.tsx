@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Home, BookOpen, Plus, SmilePlus, Users } from "lucide-react";
+import { Home, BookOpen, Plus, SmilePlus, Users, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import EntryEditor from "@/components/journal/entry-editor";
@@ -57,6 +57,16 @@ export default function MobileNav() {
             )}>
               <Users className="h-6 w-6" />
               <span className="text-xs mt-1">People</span>
+            </a>
+          </Link>
+          
+          <Link href="/places">
+            <a className={cn(
+              "flex flex-col items-center p-3",
+              location === "/places" ? "text-primary" : "text-gray-600"
+            )}>
+              <MapPin className="h-6 w-6" />
+              <span className="text-xs mt-1">Places</span>
             </a>
           </Link>
         </div>

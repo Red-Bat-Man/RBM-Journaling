@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import EmotionPicker from "./emotion-picker";
 import PeoplePicker from "./people-picker";
+import PlacePicker from "./place-picker";
 import { formatTimeAgo } from "@/lib/utils";
 import { Bold, Italic, List, Link, Image } from 'lucide-react';
 
@@ -23,7 +24,17 @@ export default function EntryEditor({ isOpen, onClose, entry }: EntryEditorProps
   const { toast } = useToast();
   const [title, setTitle] = useState(entry?.title || "");
   const [content, setContent] = useState(entry?.content || "");
-  const [selectedEmotionId, setSelectedEmotionId] = useState<number | undefined>(entry?.emotionId);
+  // Convert null to undefined for the emotion ID
+  const initialEmotionId = entry?.emotionId !== null && entry?.emotionId !== undefined 
+    ? entry.emotionId 
+    : undefined;
+  const [selectedEmotionId, setSelectedEmotionId] = useState<number | undefined>(initialEmotionId);
+  
+  // Convert null to undefined for the place ID
+  const initialPlaceId = entry?.placeId !== null && entry?.placeId !== undefined 
+    ? entry.placeId 
+    : undefined;
+  const [selectedPlaceId, setSelectedPlaceId] = useState<number | undefined>(initialPlaceId);
   const [selectedPeopleIds, setSelectedPeopleIds] = useState<number[]>(
     entry?.people ? entry.people.map(p => p.id) : []
   );
@@ -48,6 +59,7 @@ export default function EntryEditor({ isOpen, onClose, entry }: EntryEditorProps
           title,
           content,
           emotionId: selectedEmotionId,
+          placeId: selectedPlaceId,
           isFavorite,
         },
         peopleIds: selectedPeopleIds,
@@ -127,6 +139,16 @@ export default function EntryEditor({ isOpen, onClose, entry }: EntryEditorProps
             <PeoplePicker
               selectedPeopleIds={selectedPeopleIds}
               onSelectPeople={setSelectedPeopleIds}
+            />
+          </div>
+
+          <div className="mb-4">
+            <Label className="block text-sm font-medium text-gray-700 mb-2">
+              Location
+            </Label>
+            <PlacePicker
+              selectedPlaceId={selectedPlaceId}
+              onSelect={setSelectedPlaceId}
             />
           </div>
           

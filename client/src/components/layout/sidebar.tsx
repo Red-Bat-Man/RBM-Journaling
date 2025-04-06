@@ -5,6 +5,7 @@ import {
   BookOpen, 
   SmilePlus, 
   Users, 
+  MapPin,
   Bookmark, 
   X
 } from "lucide-react";
@@ -41,6 +42,12 @@ export default function Sidebar({ mobileMenuOpen, onClose }: SidebarProps) {
       path: "/people", 
       icon: <Users className="h-5 w-5 mr-3" />,
       active: location === "/people"
+    },
+    { 
+      name: "Places", 
+      path: "/places", 
+      icon: <MapPin className="h-5 w-5 mr-3" />,
+      active: location === "/places"
     },
     { 
       name: "Bookmarks", 

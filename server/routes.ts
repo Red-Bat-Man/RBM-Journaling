@@ -5,6 +5,7 @@ import { z } from "zod";
 import { 
   insertEmotionSchema, 
   insertPersonSchema, 
+  insertPlaceSchema,
   insertEntrySchema,
   createEntrySchema
 } from "@shared/schema";
@@ -161,6 +162,93 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to delete person" });
     }
   });
+  
+  // GET all places
+  app.get("/api/places", async (req, res) => {
+    try {
+      const places = await storage.getPlaces();
+      res.json(places);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch places" });
+    }
+  });
+
+  // GET a specific place
+  app.get("/api/places/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const place = await storage.getPlace(id);
+      
+      if (!place) {
+        return res.status(404).json({ message: "Place not found" });
+      }
+      
+      res.json(place);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch place" });
+    }
+  });
+
+  // CREATE a new place
+  app.post("/api/places", async (req, res) => {
+    try {
+      const placeData = insertPlaceSchema.parse(req.body);
+      const place = await storage.createPlace(placeData);
+      res.status(201).json(place);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid place data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create place" });
+    }
+  });
+
+  // UPDATE a place
+  app.put("/api/places/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const placeData = insertPlaceSchema.partial().parse(req.body);
+      const place = await storage.updatePlace(id, placeData);
+      
+      if (!place) {
+        return res.status(404).json({ message: "Place not found" });
+      }
+      
+      res.json(place);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid place data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to update place" });
+    }
+  });
+
+  // DELETE a place
+  app.delete("/api/places/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const success = await storage.deletePlace(id);
+      
+      if (!success) {
+        return res.status(404).json({ message: "Place not found" });
+      }
+      
+      res.status(204).end();
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete place" });
+    }
+  });
+
+  // GET entries by place
+  app.get("/api/entries/by-place/:placeId", async (req, res) => {
+    try {
+      const placeId = parseInt(req.params.placeId);
+      const entries = await storage.getEntriesByPlace(placeId);
+      res.json(entries);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch entries by place" });
+    }
+  });
 
   // GET all entries
   app.get("/api/entries", async (req, res) => {
@@ -238,7 +326,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put("/api/entries/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
-      const { entry: entryData, peopleIds } = createEntrySchema.partial().parse(req.body);
+      const parsedData = createEntrySchema.partial().parse(req.body);
+      // Ensure entryData is never undefined
+      const entryData = parsedData.entry || {};
+      const peopleIds = parsedData.peopleIds;
+      
       const entry = await storage.updateEntry(id, entryData, peopleIds);
       
       if (!entry) {

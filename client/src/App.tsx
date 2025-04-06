@@ -7,6 +7,7 @@ import Home from "@/pages/home";
 import AllJournals from "@/pages/all-journals";
 import Emotions from "@/pages/emotions";
 import People from "@/pages/people";
+import Places from "@/pages/places";
 import Bookmarks from "@/pages/bookmarks";
 import Sidebar from "@/components/layout/sidebar";
 import Header from "@/components/layout/header";
@@ -30,6 +31,7 @@ function Router() {
             <Route path="/journals" component={AllJournals} />
             <Route path="/emotions" component={Emotions} />
             <Route path="/people" component={People} />
+            <Route path="/places" component={Places} />
             <Route path="/bookmarks" component={Bookmarks} />
             <Route component={NotFound} />
           </Switch>

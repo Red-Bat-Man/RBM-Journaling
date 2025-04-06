@@ -46,12 +46,28 @@ export const insertPersonSchema = createInsertSchema(people).pick({
 export type InsertPerson = z.infer<typeof insertPersonSchema>;
 export type Person = typeof people.$inferSelect;
 
+// Places table
+export const places = pgTable("places", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  icon: text("icon").default("📍"),
+});
+
+export const insertPlaceSchema = createInsertSchema(places).pick({
+  name: true,
+  icon: true,
+});
+
+export type InsertPlace = z.infer<typeof insertPlaceSchema>;
+export type Place = typeof places.$inferSelect;
+
 // Journal entries table
 export const entries = pgTable("entries", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   content: text("content").notNull(),
   emotionId: integer("emotion_id"),
+  placeId: integer("place_id"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   isFavorite: boolean("is_favorite").notNull().default(false),
 });
@@ -60,6 +76,7 @@ export const insertEntrySchema = createInsertSchema(entries).pick({
   title: true,
   content: true,
   emotionId: true,
+  placeId: true,
   isFavorite: true,
 });
 
@@ -89,8 +106,9 @@ export const createEntrySchema = z.object({
 
 export type CreateEntryInput = z.infer<typeof createEntrySchema>;
 
-// Extended entry type with emotion and people
+// Extended entry type with emotion, place, and people
 export type EntryWithRelations = Entry & {
   emotion?: Emotion;
+  place?: Place;
   people: Person[];
 };

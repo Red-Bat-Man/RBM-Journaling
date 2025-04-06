@@ -2,6 +2,7 @@ import {
   users, type User, type InsertUser,
   emotions, type Emotion, type InsertEmotion,
   people, type Person, type InsertPerson,
+  places, type Place, type InsertPlace,
   entries, type Entry, type InsertEntry,
   entryPeople, type EntryPerson, type InsertEntryPerson,
   type EntryWithRelations
@@ -27,6 +28,13 @@ export interface IStorage {
   updatePerson(id: number, person: Partial<InsertPerson>): Promise<Person | undefined>;
   deletePerson(id: number): Promise<boolean>;
 
+  // Place operations
+  getPlaces(): Promise<Place[]>;
+  getPlace(id: number): Promise<Place | undefined>;
+  createPlace(place: InsertPlace): Promise<Place>;
+  updatePlace(id: number, place: Partial<InsertPlace>): Promise<Place | undefined>;
+  deletePlace(id: number): Promise<boolean>;
+
   // Entry operations
   getEntries(): Promise<EntryWithRelations[]>;
   getEntry(id: number): Promise<EntryWithRelations | undefined>;
@@ -35,6 +43,7 @@ export interface IStorage {
   deleteEntry(id: number): Promise<boolean>;
   getEntriesByEmotion(emotionId: number): Promise<EntryWithRelations[]>;
   getEntriesByPerson(personId: number): Promise<EntryWithRelations[]>;
+  getEntriesByPlace(placeId: number): Promise<EntryWithRelations[]>;
   getFavoriteEntries(): Promise<EntryWithRelations[]>;
   toggleFavorite(id: number): Promise<EntryWithRelations | undefined>;
 }
@@ -43,12 +52,14 @@ export class MemStorage implements IStorage {
   private users: Map<number, User>;
   private emotions: Map<number, Emotion>;
   private people: Map<number, Person>;
+  private places: Map<number, Place>;
   private entries: Map<number, Entry>;
   private entryPeople: Map<number, EntryPerson>;
   
   private userCurrentId: number;
   private emotionCurrentId: number;
   private personCurrentId: number;
+  private placeCurrentId: number;
   private entryCurrentId: number;
   private entryPersonCurrentId: number;
 
@@ -56,17 +67,37 @@ export class MemStorage implements IStorage {
     this.users = new Map();
     this.emotions = new Map();
     this.people = new Map();
+    this.places = new Map();
     this.entries = new Map();
     this.entryPeople = new Map();
     
     this.userCurrentId = 1;
     this.emotionCurrentId = 1;
     this.personCurrentId = 1;
+    this.placeCurrentId = 1;
     this.entryCurrentId = 1;
     this.entryPersonCurrentId = 1;
 
-    // Initialize with default emotions
+    // Initialize with default emotions and places
     this.initDefaultEmotions();
+    this.initDefaultPlaces();
+  }
+
+  private initDefaultPlaces() {
+    const defaultPlaces = [
+      { name: "Home", icon: "🏠" },
+      { name: "Work", icon: "🏢" },
+      { name: "Coffee Shop", icon: "☕" },
+      { name: "Restaurant", icon: "🍽️" },
+      { name: "Park", icon: "🌳" },
+      { name: "Gym", icon: "💪" },
+      { name: "Beach", icon: "🏖️" },
+      { name: "School", icon: "🎓" },
+    ];
+
+    defaultPlaces.forEach(place => {
+      this.createPlace(place);
+    });
   }
 
   private initDefaultEmotions() {
@@ -170,6 +201,56 @@ export class MemStorage implements IStorage {
     return this.people.delete(id);
   }
 
+  // Place operations
+  async getPlaces(): Promise<Place[]> {
+    return Array.from(this.places.values());
+  }
+
+  async getPlace(id: number): Promise<Place | undefined> {
+    return this.places.get(id);
+  }
+
+  async createPlace(insertPlace: InsertPlace): Promise<Place> {
+    const id = this.placeCurrentId++;
+    // Ensure icon is never undefined 
+    const placeData = {
+      ...insertPlace,
+      icon: insertPlace.icon || "📍"
+    };
+    const place: Place = { ...placeData, id };
+    this.places.set(id, place);
+    return place;
+  }
+
+  async updatePlace(id: number, updateData: Partial<InsertPlace>): Promise<Place | undefined> {
+    const place = this.places.get(id);
+    if (!place) return undefined;
+
+    const updatedPlace = { ...place, ...updateData };
+    this.places.set(id, updatedPlace);
+    return updatedPlace;
+  }
+
+  async deletePlace(id: number): Promise<boolean> {
+    // Update any entries that reference this place
+    const entriesWithPlace = Array.from(this.entries.values())
+      .filter(entry => entry.placeId === id);
+      
+    entriesWithPlace.forEach(entry => {
+      const updatedEntry = { ...entry, placeId: null };
+      this.entries.set(entry.id, updatedEntry);
+    });
+
+    return this.places.delete(id);
+  }
+
+  async getEntriesByPlace(placeId: number): Promise<EntryWithRelations[]> {
+    const entries = Array.from(this.entries.values())
+      .filter(entry => entry.placeId === placeId);
+      
+    return Promise.all(entries.map(entry => this.populateEntryRelations(entry)));
+  }
+
   // Entry operations
   async getEntries(): Promise<EntryWithRelations[]> {
     const entries = Array.from(this.entries.values());
@@ -186,9 +267,17 @@ export class MemStorage implements IStorage {
     const id = this.entryCurrentId++;
     const now = new Date();
     
+    // Ensure required fields are properly set
+    const entryData = {
+      ...insertEntry,
+      emotionId: insertEntry.emotionId ?? null,
+      placeId: insertEntry.placeId ?? null,
+      isFavorite: insertEntry.isFavorite ?? false
+    };
+    
     // Set createdAt to current time
     const entry: Entry = { 
-      ...insertEntry, 
+      ...entryData, 
       id, 
       createdAt: now 
     };
@@ -205,7 +294,19 @@ export class MemStorage implements IStorage {
     const entry = this.entries.get(id);
     if (!entry) return undefined;
 
-    const updatedEntry = { ...entry, ...updateData };
+    // Process the update data to handle null values correctly
+    let processedUpdateData = { ...updateData };
+    if (updateData.emotionId === undefined) {
+      processedUpdateData.emotionId = entry.emotionId;
+    }
+    if (updateData.placeId === undefined) {
+      processedUpdateData.placeId = entry.placeId;
+    }
+    if (updateData.isFavorite === undefined) {
+      processedUpdateData.isFavorite = entry.isFavorite;
+    }
+
+    const updatedEntry = { ...entry, ...processedUpdateData };
     this.entries.set(id, updatedEntry);
 
     // Update people associations if provided
@@ -297,6 +398,11 @@ export class MemStorage implements IStorage {
     const emotion = entry.emotionId 
       ? this.emotions.get(entry.emotionId) 
       : undefined;
+      
+    // Get the place
+    const place = entry.placeId 
+      ? this.places.get(entry.placeId) 
+      : undefined;
 
     // Get associated people
     const entryPeopleAssociations = Array.from(this.entryPeople.values())
@@ -310,6 +416,7 @@ export class MemStorage implements IStorage {
     return {
       ...entry,
       emotion,
+      place,
       people: associatedPeople
     };
   }
