@@ -78,7 +78,7 @@ export default function Sidebar({ mobileMenuOpen, onClose }: SidebarProps) {
           <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-xl">
             R
           </div>
-          <h1 className="ml-3 text-xl font-semibold text-gray-800">Reflecty</h1>
+          <h1 className="ml-3 text-xl font-semibold text-gray-800">RBM</h1>
         </div>
         <button 
           onClick={onClose}

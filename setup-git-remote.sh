@@ -7,7 +7,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-echo -e "${YELLOW}Digital Journal Git Remote Setup${NC}"
+echo -e "${YELLOW}RBM Journaling Git Remote Setup${NC}"
 echo "This script will help you connect your local repository to a remote Git repository."
 echo ""
 
@@ -38,7 +38,7 @@ git remote -v
 if ! git log -1 &> /dev/null; then
     echo "No commits found. Creating an initial commit..."
     git add .
-    git commit -m "Initial commit: Digital Journal application"
+    git commit -m "Initial commit: RBM Journaling application"
 fi
 
 # Push to remote

@@ -1,4 +1,4 @@
-# Digital Journal - Emotion Tracker
+# RBM Journaling - Emotion Tracker
 
 A comprehensive digital journaling platform that allows users to track emotions, record personal insights, and manage memories with a focus on mental wellness.
 
@@ -11,7 +11,6 @@ A comprehensive digital journaling platform that allows users to track emotions,
 - **Secure Authentication**: Protect your personal journal with email/password authentication
 - **Data Management**: Export and import your journal data for safekeeping
 
-
 ## Tech Stack
 
 - Frontend: React with TypeScript
@@ -20,7 +19,6 @@ A comprehensive digital journaling platform that allows users to track emotions,
 - Form Handling: React Hook Form with Zod validation
 - Backend: Express.js
 - Database: In-memory storage (can be configured for PostgreSQL)
-
 
 ## Getting Started
 
@@ -34,11 +32,10 @@ A comprehensive digital journaling platform that allows users to track emotions,
 1. Clone the repository
 2. Start the application through the workflow
 
-
 ## Project Structure
 
 ```
-digital-journal/
+rbm-journaling/
 ├── client/              # Frontend React application
 │   ├── src/
 │   │   ├── components/  # Reusable UI components
@@ -56,4 +53,3 @@ digital-journal/
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-

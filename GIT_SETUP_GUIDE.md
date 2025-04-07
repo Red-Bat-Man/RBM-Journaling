@@ -1,6 +1,6 @@
 # Git Repository Setup Guide
 
-This guide provides basic instructions for connecting your Digital Journal application to a Git hosting provider.
+This guide provides basic instructions for connecting your RBM Journaling application to a Git hosting provider.
 
 ## Creating a Remote Repository
 
@@ -10,13 +10,13 @@ This guide provides basic instructions for connecting your Digital Journal appli
 
 2. **Create a new repository**
    - Go to your chosen provider's website
-   - Create a new repository with an appropriate name (e.g., "digital-journal")
+   - Create a new repository with an appropriate name (e.g., "rbm-journaling")
    - Choose visibility settings (public or private) based on your preferences
    - Skip repository initialization options if available
 
 3. **Note your repository URL**
    - After creating the repository, you'll be provided with a URL
-   - This URL will look something like: https://github.com/username/digital-journal.git
+   - This URL will look something like: https://github.com/username/rbm-journaling.git
    - You'll need this URL to connect your local project
 
 ## Connecting to the Remote Repository
