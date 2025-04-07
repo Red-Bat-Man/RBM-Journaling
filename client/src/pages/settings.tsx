@@ -1,5 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 import FontPicker from "@/components/settings/font-picker";
+import FontSizePicker from "@/components/settings/font-size-picker";
+import TextColorPicker from "@/components/settings/text-color-picker";
 import { ChevronLeft } from "lucide-react";
 import { Link } from "wouter";
 
@@ -28,12 +30,19 @@ export default function Settings() {
         <div>
           <h2 className="text-xl font-medium mb-4">Appearance</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4 p-4 border rounded-md">
-              <h3 className="text-lg font-medium">Typography</h3>
-              <p className="text-sm text-muted-foreground">
-                Choose how text appears throughout your journal
-              </p>
-              <FontPicker />
+            <div className="space-y-6 p-4 border rounded-md">
+              <div>
+                <h3 className="text-lg font-medium">Typography</h3>
+                <p className="text-sm text-muted-foreground">
+                  Choose how text appears throughout your journal
+                </p>
+              </div>
+              
+              <div className="space-y-6">
+                <FontPicker />
+                <FontSizePicker />
+                <TextColorPicker />
+              </div>
             </div>
           </div>
         </div>
