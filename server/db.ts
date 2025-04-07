@@ -9,7 +9,11 @@ if (!connectionString) {
 }
 
 // For use with drizzle-orm
-export const client = postgres(connectionString);
+export const client = postgres(connectionString, {
+  max: 10,  // Set max pool connections
+  idle_timeout: 20, // Timeout idle connections after 20 seconds
+  connect_timeout: 10, // Connection timeout after 10 seconds
+});
 export const db = drizzle(client);
 
 // Log database connection

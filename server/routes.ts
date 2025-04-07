@@ -1,5 +1,4 @@
 import type { Express } from "express";
-import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { z } from "zod";
 import { 
@@ -11,7 +10,7 @@ import {
 } from "@shared/schema";
 import { setupAuth } from "./auth";
 
-export async function registerRoutes(app: Express): Promise<Server> {
+export async function registerRoutes(app: Express): Promise<void> {
   // Set up authentication routes
   setupAuth(app);
   // GET all emotions
@@ -381,6 +380,5 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  const httpServer = createServer(app);
-  return httpServer;
+  // Routes registered successfully
 }

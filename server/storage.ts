@@ -60,7 +60,7 @@ export class DatabaseStorage implements IStorage {
   public sessionStore: session.Store;
 
   constructor() {
-    // Create PostgreSQL session store
+    // Create PostgreSQL session store with minimal configuration
     const PostgresSessionStore = connectPg(session);
     this.sessionStore = new PostgresSessionStore({
       conObject: {
@@ -69,8 +69,13 @@ export class DatabaseStorage implements IStorage {
       createTableIfMissing: true,
     });
 
-    // Initialize default data
-    this.initDefaultData();
+    // We'll initialize data in a separate step
+    // This keeps the constructor fast
+  }
+  
+  // New method to initialize data called from outside
+  public async initialize(): Promise<void> {
+    await this.initDefaultData();
   }
 
   private async initDefaultData() {
@@ -106,9 +111,8 @@ export class DatabaseStorage implements IStorage {
       { name: "School", icon: "🎓" },
     ];
 
-    for (const place of defaultPlaces) {
-      await this.createPlace(place);
-    }
+    // Batch insert places for better performance
+    await db.insert(places).values(defaultPlaces);
   }
 
   private async initDefaultEmotions() {
@@ -123,9 +127,8 @@ export class DatabaseStorage implements IStorage {
       { name: "Frustrated", emoji: "😤", color: "#F97316" },
     ];
 
-    for (const emotion of defaultEmotions) {
-      await this.createEmotion(emotion);
-    }
+    // Batch insert emotions for better performance
+    await db.insert(emotions).values(defaultEmotions);
   }
 
   // User operations
@@ -594,4 +597,5 @@ export class DatabaseStorage implements IStorage {
 }
 
 // Create singleton instance of the storage
+// Create the storage instance but don't initialize it yet
 export const storage = new DatabaseStorage();
