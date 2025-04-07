@@ -11,6 +11,7 @@ import { apiRequest, queryClient } from "@/lib/queryClient";
 import EmotionPicker from "./emotion-picker";
 import PeoplePicker from "./people-picker";
 import PlacePicker from "./place-picker";
+import VoiceRecorder from "./voice-recorder";
 import { formatTimeAgo } from "@/lib/utils";
 import { Bold, Italic, List, Link, Image } from 'lucide-react';
 
@@ -153,9 +154,12 @@ export default function EntryEditor({ isOpen, onClose, entry }: EntryEditorProps
           </div>
           
           <div className="mb-4">
-            <Label htmlFor="entryContent" className="block text-sm font-medium text-gray-700 mb-1">
-              Journal Content
-            </Label>
+            <div className="flex justify-between items-center mb-1">
+              <Label htmlFor="entryContent" className="block text-sm font-medium text-gray-700">
+                Journal Content
+              </Label>
+              <VoiceRecorder onTranscription={(text) => setContent(prev => prev ? `${prev} ${text}` : text)} />
+            </div>
             <div className="border border-gray-300 rounded-lg overflow-hidden">
               <div className="bg-gray-50 border-b border-gray-300 px-3 py-2 flex items-center space-x-2">
                 <Button 
@@ -202,7 +206,7 @@ export default function EntryEditor({ isOpen, onClose, entry }: EntryEditorProps
               <Textarea
                 id="entryContent"
                 rows={8}
-                placeholder="Write about your experience..."
+                placeholder="Write about your experience or use voice recording..."
                 className="w-full px-3 py-2 focus:ring-2 focus:ring-primary focus:border-primary border-0 resize-none"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
