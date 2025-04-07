@@ -2,41 +2,61 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --font-family: Poppins;
+  --base-font-size: 1rem;
+  --text-color: #1f2937;
+}
+
 @layer base {
   * {
     @apply border-border;
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground tracking-tight;
+    @apply font-sans antialiased bg-background tracking-tight;
+    font-family: var(--font-family), system-ui, sans-serif;
+    font-size: var(--base-font-size);
+    color: var(--text-color);
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-medium tracking-tight;
+    color: var(--text-color);
   }
 
   h1 {
-    @apply text-3xl font-semibold;
+    @apply font-semibold;
+    font-size: calc(var(--base-font-size) * 1.875); /* 3xl */
   }
 
   h2 {
-    @apply text-2xl font-medium;
+    @apply font-medium;
+    font-size: calc(var(--base-font-size) * 1.5); /* 2xl */
   }
 
   h3 {
-    @apply text-xl font-medium;
+    @apply font-medium;
+    font-size: calc(var(--base-font-size) * 1.25); /* xl */
+  }
+
+  p, span, div {
+    color: var(--text-color);
   }
 
   .journal-title {
-    @apply text-xl font-medium leading-tight;
+    @apply font-medium leading-tight;
+    font-size: calc(var(--base-font-size) * 1.25); /* xl */
   }
 
   .journal-content {
-    @apply text-base font-normal leading-relaxed;
+    @apply font-normal leading-relaxed;
+    font-size: var(--base-font-size);
   }
   
   .section-title {
-    @apply font-medium text-lg mb-4;
+    @apply font-medium mb-4;
+    font-size: calc(var(--base-font-size) * 1.125); /* lg */
   }
 
   .sidebar-link {

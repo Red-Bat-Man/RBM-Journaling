@@ -5,7 +5,12 @@ export default {
   content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     fontFamily: {
-      sans: ['Poppins', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+      sans: ['var(--font-family, Poppins)', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+      poppins: ['Poppins', 'sans-serif'],
+      lato: ['Lato', 'sans-serif'],
+      roboto: ['Roboto', 'sans-serif'],
+      merriweather: ['Merriweather', 'serif'],
+      montserrat: ['Montserrat', 'sans-serif'],
     },
     extend: {
       borderRadius: {

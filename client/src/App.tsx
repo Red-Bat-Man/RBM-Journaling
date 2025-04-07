@@ -9,10 +9,12 @@ import Emotions from "@/pages/emotions";
 import People from "@/pages/people";
 import Places from "@/pages/places";
 import Bookmarks from "@/pages/bookmarks";
+import Settings from "@/pages/settings";
 import Sidebar from "@/components/layout/sidebar";
 import Header from "@/components/layout/header";
 import MobileNav from "@/components/layout/mobile-nav";
 import { useState } from "react";
+import { FontSettingsProvider } from "@/hooks/use-font-settings";
 
 function Router() {
   const [location] = useLocation();
@@ -33,6 +35,7 @@ function Router() {
             <Route path="/people" component={People} />
             <Route path="/places" component={Places} />
             <Route path="/bookmarks" component={Bookmarks} />
+            <Route path="/settings" component={Settings} />
             <Route component={NotFound} />
           </Switch>
         </div>
@@ -46,7 +49,10 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Router />
+      <FontSettingsProvider>
+        <Router />
+        <Toaster />
+      </FontSettingsProvider>
     </QueryClientProvider>
   );
 }
