@@ -2,6 +2,7 @@ import { Separator } from "@/components/ui/separator";
 import FontPicker from "@/components/settings/font-picker";
 import FontSizePicker from "@/components/settings/font-size-picker";
 import TextColorPicker from "@/components/settings/text-color-picker";
+import BackupManager from "@/components/settings/backup-manager";
 import { ChevronLeft } from "lucide-react";
 import { Link } from "wouter";
 
@@ -26,7 +27,7 @@ export default function Settings() {
       
       <Separator />
       
-      <div className="space-y-6">
+      <div className="space-y-8">
         <div>
           <h2 className="text-xl font-medium mb-4">Appearance</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -44,6 +45,13 @@ export default function Settings() {
                 <TextColorPicker />
               </div>
             </div>
+          </div>
+        </div>
+        
+        <div>
+          <h2 className="text-xl font-medium mb-4">Data Management</h2>
+          <div className="grid grid-cols-1 gap-6">
+            <BackupManager />
           </div>
         </div>
       </div>
