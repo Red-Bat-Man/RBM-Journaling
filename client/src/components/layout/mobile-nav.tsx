@@ -13,61 +13,61 @@ export default function MobileNav() {
       <nav className="md:hidden bg-white border-t border-gray-200 fixed bottom-0 left-0 right-0 z-10">
         <div className="flex justify-around items-center">
           <Link href="/">
-            <a className={cn(
-              "flex flex-col items-center p-3",
+            <div className={cn(
+              "flex flex-col items-center p-3 cursor-pointer font-medium",
               location === "/" ? "text-primary" : "text-gray-600"
             )}>
               <Home className="h-6 w-6" />
               <span className="text-xs mt-1">Home</span>
-            </a>
+            </div>
           </Link>
           
           <Link href="/journals">
-            <a className={cn(
-              "flex flex-col items-center p-3",
+            <div className={cn(
+              "flex flex-col items-center p-3 cursor-pointer font-medium",
               location === "/journals" ? "text-primary" : "text-gray-600"
             )}>
               <BookOpen className="h-6 w-6" />
               <span className="text-xs mt-1">Journals</span>
-            </a>
+            </div>
           </Link>
           
           <button 
             onClick={() => setShowNewEntryEditor(true)}
-            className="flex flex-col items-center p-3 bg-primary text-white rounded-full -mt-5 shadow-lg"
+            className="flex flex-col items-center p-3 bg-primary text-white rounded-full -mt-5 shadow-lg font-medium"
           >
             <Plus className="h-6 w-6" />
             <span className="text-xs mt-1">New</span>
           </button>
           
           <Link href="/emotions">
-            <a className={cn(
-              "flex flex-col items-center p-3",
+            <div className={cn(
+              "flex flex-col items-center p-3 cursor-pointer font-medium",
               location === "/emotions" ? "text-primary" : "text-gray-600"
             )}>
               <SmilePlus className="h-6 w-6" />
               <span className="text-xs mt-1">Emotions</span>
-            </a>
+            </div>
           </Link>
           
           <Link href="/people">
-            <a className={cn(
-              "flex flex-col items-center p-3",
+            <div className={cn(
+              "flex flex-col items-center p-3 cursor-pointer font-medium",
               location === "/people" ? "text-primary" : "text-gray-600"
             )}>
               <Users className="h-6 w-6" />
               <span className="text-xs mt-1">People</span>
-            </a>
+            </div>
           </Link>
           
           <Link href="/places">
-            <a className={cn(
-              "flex flex-col items-center p-3",
+            <div className={cn(
+              "flex flex-col items-center p-3 cursor-pointer font-medium",
               location === "/places" ? "text-primary" : "text-gray-600"
             )}>
               <MapPin className="h-6 w-6" />
               <span className="text-xs mt-1">Places</span>
-            </a>
+            </div>
           </Link>
         </div>
       </nav>

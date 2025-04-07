@@ -86,9 +86,9 @@ export default function Sidebar({ mobileMenuOpen, onClose }: SidebarProps) {
           {navItems.map((item) => (
             <li key={item.path}>
               <Link href={item.path}>
-                <a
+                <div
                   className={cn(
-                    "flex items-center px-4 py-3 rounded-lg font-medium",
+                    "flex items-center px-4 py-3 rounded-lg font-medium cursor-pointer sidebar-link",
                     item.active
                       ? "text-primary bg-indigo-50"
                       : "text-gray-600 hover:bg-gray-100"
@@ -96,7 +96,7 @@ export default function Sidebar({ mobileMenuOpen, onClose }: SidebarProps) {
                 >
                   {item.icon}
                   {item.name}
-                </a>
+                </div>
               </Link>
             </li>
           ))}

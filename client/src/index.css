@@ -8,6 +8,38 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased bg-background text-foreground tracking-tight;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-medium tracking-tight;
+  }
+
+  h1 {
+    @apply text-3xl font-semibold;
+  }
+
+  h2 {
+    @apply text-2xl font-medium;
+  }
+
+  h3 {
+    @apply text-xl font-medium;
+  }
+
+  .journal-title {
+    @apply text-xl font-medium leading-tight;
+  }
+
+  .journal-content {
+    @apply text-base font-normal leading-relaxed;
+  }
+  
+  .section-title {
+    @apply font-medium text-lg mb-4;
+  }
+
+  .sidebar-link {
+    @apply font-medium;
   }
 }
