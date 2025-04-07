@@ -9,8 +9,11 @@ import {
   insertEntrySchema,
   createEntrySchema
 } from "@shared/schema";
+import { setupAuth } from "./auth";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Set up authentication routes
+  setupAuth(app);
   // GET all emotions
   app.get("/api/emotions", async (req, res) => {
     try {
